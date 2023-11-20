@@ -1,0 +1,29 @@
+{
+    "discord": {
+        "token": "YOUR_DISCORD_BOT_TOKEN",
+        "offer_power_options": true,
+        "delete_messages": true,
+        "clear_channel": true,
+        "channel_id": "YOUR_DISCORD_CHANNEL_ID",
+        "discord_to_vm_mapping": {
+            "DISCORD_USER_ID_1": "VM_ID_1",
+            "DISCORD_USER_ID_2": "VM_ID_2",
+            "DISCORD_USER_ID_3": "VM_ID_3"
+        }
+    },
+    "ipmi": {
+        "host": "YOUR_IPMI_HOST",
+        "username": "YOUR_IPMI_USERNAME",
+        "password": "YOUR_IPMI_PASSWORD",
+        "port": 623
+    },
+    "proxmox": {
+        "base_url": "YOUR_PROXMOX_BASE_URL",
+        "token": "YOUR_PROXMOX_TOKEN",
+        "username": "YOUR_PROXMOX_USERNAME",
+        "realm": "YOUR_PROXMOX_REALM",
+        "token_name": "YOUR_PROXMOX_TOKEN_NAME",
+        "node_name": "YOUR_PROXMOX_NODE_NAME",
+        "startup_time": 180
+    }
+}
