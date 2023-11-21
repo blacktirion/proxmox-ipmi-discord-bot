@@ -187,7 +187,7 @@ async def power_on_host(ctx):
         ipmi.chassis_control(IPMI_POWER_ON)        
         poweronmsg = await ctx.send(f"{ctx.author.mention}, server is powering on. Please wait.")
         if DISCORD_DELETE_MESSAGES:
-            await asyncio.sleep(180)
+            await asyncio.sleep(PROXMOX_STARTUP_TIME)
             await poweronmsg.delete()
     except Exception as e:
         poweronfailmsg = await ctx.send(f"{ctx.author.mention}, failed to power on server. Error: {str(e)}")
@@ -412,7 +412,6 @@ async def start_vm_command(ctx):
                 await poweroffermsg.delete()
         asyncio.create_task(delete_poweroffermsg(poweroffermsg))
         await offer_host_power_options(ctx)
-        await asyncio.sleep(PROXMOX_STARTUP_TIME)
         server_status_response = await check_proxmox_status(ctx, direct_command=True)
         if server_status_response is None:
             poweroffererrormsg = await ctx.send(f"{ctx.author.mention}, something went wrong. Please reach out to the server admin.")
@@ -465,6 +464,8 @@ async def stop_vm_command(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
+    if DISCORD_DELETE_MESSAGES:
+        await ctx.message.delete()
     if isinstance(error, commands.CommandNotFound):
         invalid_cmd_msg = await ctx.send(f"{ctx.author.mention}, invalid command. Here is a list of available commands:\n```{', '.join([command.name for command in bot.commands])}``` use the `!help` command for more information.")
         
