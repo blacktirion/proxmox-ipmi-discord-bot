@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import requests
 import asyncio
 import json
@@ -353,6 +353,20 @@ async def on_ready():
             except discord.HTTPException as e:
                 print(f"An error occurred while purging messages: {e}")
 
+@tasks.loop(hours=24)
+async def clear_channel():
+
+    if DISCORD_CLEAR_CHANNEL:
+        channel = bot.get_channel(DISCORD_CHANNEL_ID)
+
+        if channel:
+            try:
+                await channel.purge(check=lambda msg: not msg.pinned)
+                print(f'Cleared non-pinned messages in #{channel.name}')
+            except discord.Forbidden:
+                print(f"Bot doesn't have 'Manage Messages' permission in #{channel.name}")
+            except discord.HTTPException as e:
+                print(f"An error occurred while purging messages: {e}")
 
 @bot.command(name='serverstatus', brief="Check Proxmox server status.")
 async def server_status_command(ctx):
