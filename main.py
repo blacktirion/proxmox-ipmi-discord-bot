@@ -5,6 +5,7 @@ import asyncio
 import json
 import pyipmi
 import pyipmi.interfaces
+import argparse
 
 
 # Create an instance of discord.Intents
@@ -13,8 +14,20 @@ intents = discord.Intents.all()  # This allows all privileged intents
 # Initialize the bot with the intents parameter
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+
+# Create an ArgumentParser instance
+parser = argparse.ArgumentParser(description='Discord bot for Proxmox VM power operations.')
+
+# Add the --config-file argument
+parser.add_argument('--config-file', dest='config_file', default='config.json',
+                    help='Path to the configuration file')
+
+# Parse the command-line arguments
+args = parser.parse_args()
+
 # Load configuration from config file
-with open('config.json', 'r') as config_file:
+config_file_path = args.config_file
+with open(config_file_path, 'r') as config_file:
     config = json.load(config_file)
     discord_config = config.get("discord", {})
     ipmi_config = config.get("ipmi", {})
