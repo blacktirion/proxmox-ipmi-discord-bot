@@ -9,6 +9,7 @@ COPY requirements.txt /app/requirements.txt
 
 # Install the project dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apt update && apt install -y ipmitool
 
 # Copy the project files into the container
 COPY main.py /app/proxmox_bot.py
