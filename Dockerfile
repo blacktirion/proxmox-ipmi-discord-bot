@@ -9,10 +9,10 @@ COPY requirements.txt /app/requirements.txt
 
 # Install the project dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN apt update && apt install -y ipmitool
+RUN apt update && apt install -y ipmitool && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Copy the project files into the container
 COPY main.py /app/proxmox_bot.py
 
 # Set the entry point command for the container
-CMD [ "python", "/app/proxmox_bot.py --config-file /config/config.json" ]
+CMD [ "python", "/app/proxmox_bot.py", "--config-file", "/config/config.json" ]
