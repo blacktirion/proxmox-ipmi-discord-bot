@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY main.py /app/proxmox_bot.py
 
 # Set the entry point command for the container
-CMD [ "python", "/app/proxmox_bot.py" ]
+CMD [ "python", "/app/proxmox_bot.py --config-file /config/config.json" ]
