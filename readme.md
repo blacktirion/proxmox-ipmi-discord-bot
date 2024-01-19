@@ -3,7 +3,7 @@
 ## Discord Integration
 - The bot connects to Discord using the `discord.py` library.
 - It initializes the bot with a command prefix and privileged intents.
-- Configuration settings are loaded from a `config.json` file.
+- Configuration settings are loaded from a json config file (see example). Use Pass the argument `--config-file /path/to/config.json` for it to read your configuration file. 
 
 ## Proxmox Integration
 - The bot interacts with a Proxmox server using the Proxmox API.
