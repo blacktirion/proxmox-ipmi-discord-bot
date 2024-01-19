@@ -80,9 +80,9 @@ async def check_proxmox_status(ctx, direct_command=False):
     if vm_id:
         proxmox_url = f"{PROXMOX_BASE_URL}/nodes/{PROXMOX_NODE_NAME}/status"
         headers = {"Authorization": f"PVEAPIToken={PROXMOX_USERNAME}@{PROXMOX_REALM}!{PROXMOX_TOKEN_NAME}={PROXMOX_TOKEN}"}
-
+        
         try:
-            # todo: find a way to suppress ssl warning
+            #todo: find a way to suppress ssl warning
             response = requests.get(proxmox_url, headers=headers, verify=False, timeout=5)
         except requests.exceptions.ConnectTimeout:
             error_message = f"{ctx.author.mention}, failed to connect to Proxmox: Connection timed out."
@@ -93,11 +93,10 @@ async def check_proxmox_status(ctx, direct_command=False):
                     await error_msg.delete()
             asyncio.create_task(delete_error_message(error_msg))
             return None
-        except Exception as e:
-            print(f"Error in check_proxmox_status: {str(e)}")
-            return None
-
         if response.status_code == 200:
+            if direct_command:
+                return response  # Return the full response for direct commands
+
             if "idle" in response.json().get("data", {}) and response.json()["data"]["idle"] == 0:
                 await ctx.send("Proxmox server is ready. You can request VM power operations now.")
             else:
