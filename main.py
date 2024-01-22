@@ -493,15 +493,29 @@ async def stop_vm_command(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     if DISCORD_DELETE_MESSAGES:
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except discord.NotFound:
+            # The message might have been deleted already, ignore the error
+            pass
+
     if isinstance(error, commands.CommandNotFound):
         invalid_cmd_msg = await ctx.send(f"{ctx.author.mention}, invalid command. Here is a list of available commands:\n```{', '.join([command.name for command in bot.commands])}``` use the `!help` command for more information.")
-        
+
         if DISCORD_DELETE_MESSAGES:
             await asyncio.sleep(60)
-            await invalid_cmd_msg.delete()
+            try:
+                await invalid_cmd_msg.delete()
+            except discord.NotFound:
+                pass
     else:
         print(f"Error in command {ctx.command} for user {ctx.author}: {error}")
+        await ctx.send(f"An error occurred while processing the command. Please check the logs for more details.")
+
+        # Print the traceback to the console for debugging
+        import traceback
+        traceback.print_exc()
+
 
 @bot.command(name='poweron', brief="Power on the Proxmox host.")
 async def power_on_command(ctx):
