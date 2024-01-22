@@ -98,11 +98,11 @@ async def check_proxmox_status(ctx, direct_command=False):
                 print(f"Error in check_proxmox_status: {str(e)}")
                 return None
 
-            if response and response.status_code == 200:
-                data = response.json().get("data", {})
-                idle = data.get("idle", 0)
+            if response.status_code == 200:
+                if direct_command:
+                    return response  # Return the full response for direct commands
 
-                if idle == 0:
+                if "idle" in response.json().get("data", {}) and response.json()["data"]["idle"] == 0:
                     await ctx.send("Proxmox server is ready. You can request VM power operations now.")
                 else:
                     await ctx.send("Proxmox server is not ready yet. Please wait.")
