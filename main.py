@@ -500,8 +500,8 @@ async def on_command_error(ctx, error):
         if DISCORD_DELETE_MESSAGES:
             await asyncio.sleep(60)
             await invalid_cmd_msg.delete()
-    else :
-        print(error)
+    else:
+        print(f"Error in command {ctx.command} for user {ctx.author}: {error}")
 
 @bot.command(name='poweron', brief="Power on the Proxmox host.")
 async def power_on_command(ctx):
