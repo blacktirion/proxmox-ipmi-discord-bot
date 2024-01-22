@@ -86,6 +86,7 @@ async def check_proxmox_status(ctx, direct_command=False):
             response = requests.get(proxmox_url, headers=headers, verify=False, timeout=5)
         except requests.exceptions.ConnectTimeout:
             error_message = f"{ctx.author.mention}, failed to connect to Proxmox: Connection timed out."
+            print (f"{error_message}")
             error_msg = await ctx.send(error_message)
             async def delete_error_message(error_msg):
                 if DISCORD_DELETE_MESSAGES:
